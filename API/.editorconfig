@@ -1,0 +1,12 @@
+[*,{cs,vb}]
+dotnet_namimg_rule.private_members_with_underscore.symbols = private_fields
+dotnet_namimg_rule.private_members_with_underscore.style = prefix_underscore
+dotnet_namimg_rule.private_members_with_underscore.serverity = suggestion
+
+dotnet_namimg_symbols.private_fields.application_kinds = field
+dotnet_namimg_symbols.private_fields.application_accessibilities = private
+
+dotnet_namimg_style.prefix_underscore.capitalization = camel_case
+dotnet_namimg_style.prefix_underscore.required_prefix = _
+
+
