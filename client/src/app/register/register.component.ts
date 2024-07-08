@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -14,22 +15,23 @@ export class RegisterComponent implements OnInit {
   @Input() usersFromHomeComponent: any;
   @Output() cancelRegister = new EventEmitter();
   model: any = {};
-  constructor(private accountService:AccountService) { }
+  constructor(private accountService:AccountService, private toastr:ToastrService) { }
   ngOnInit(): void {
   }
   register(){
     this.accountService.register(this.model).subscribe({
       next: response =>{
-        console.log(response);
+        // console.log(response);
         this.cancel();
       },
-      error: error => console.log(error)
+      error: error =>
+        this.toastr.error(error.error)
     })
   }
 
   cancel(){
     this.cancelRegister.emit(false);  // Emitting event to HomeComponent to hide the registration form.  This is done using @Output decorator.  In HomeComponent, listen to this event and hide the registration form.  This is a one-way communication.  If you want to emit an event with a return value, you can use @Output() and EventEmitter<ReturnType>.  In this case, the return value would be the user object.  In HomeComponent, you would
-    console.log('cancelled');
+    // console.log('cancelled');
   }
 
 }

@@ -9,12 +9,18 @@ import { AccountService } from './_services/account.service';
 import { User } from './_models/user';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideAnimations } from '@angular/platform-browser/animations';
+
+import { provideToastr, ToastrModule } from 'ngx-toastr';
+import { routes } from './app.routes';
 @Component({
     selector: 'app-root',
     standalone: true,
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
-    imports: [RouterOutlet, CommonModule, NavComponent,HomeComponent,RegisterComponent, NgbDropdownModule],
+    imports: [RouterOutlet, CommonModule, NavComponent,HomeComponent,
+      RegisterComponent, NgbDropdownModule,ToastrModule],
     providers: []
   })
 export class AppComponent implements OnInit {
@@ -31,4 +37,13 @@ export class AppComponent implements OnInit {
     this.accountService.setCurrentUser(user);
   }
 }
-
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideRouter(routes),
+    provideHttpClient(),
+    provideAnimations(), // required animations providers
+    provideToastr({
+      positionClass: 'toast-bottom-right',
+    }), // Toastr providers
+  ]
+});
