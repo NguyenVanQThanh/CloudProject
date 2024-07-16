@@ -1,6 +1,6 @@
 
 import { CommonModule } from '@angular/common';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, provideRouter } from '@angular/router';
 import { NavComponent } from "./nav/nav.component";
@@ -14,13 +14,16 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { provideToastr, ToastrModule } from 'ngx-toastr';
 import { routes } from './app.routes';
+import { errorInterceptor } from './_interceptors/error.interceptor';
+import { NotFoundComponent } from './errors/not-found/not-found.component';
+
 @Component({
     selector: 'app-root',
     standalone: true,
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
     imports: [RouterOutlet, CommonModule, NavComponent,HomeComponent,
-      RegisterComponent, NgbDropdownModule,ToastrModule],
+      RegisterComponent, NgbDropdownModule,ToastrModule,NotFoundComponent],
     providers: []
   })
 export class AppComponent implements OnInit {
@@ -40,10 +43,14 @@ export class AppComponent implements OnInit {
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
-    provideHttpClient(),
+    provideHttpClient(withInterceptorsFromDi()),
+    {provide: HTTP_INTERCEPTORS, useClass: errorInterceptor, multi: true},
     provideAnimations(), // required animations providers
     provideToastr({
       positionClass: 'toast-bottom-right',
-    }), // Toastr providers
+      timeOut: 1000,
+      progressBar: true,
+      progressAnimation: 'decreasing',
+    }) // Toastr providers
   ]
 });
