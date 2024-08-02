@@ -17,14 +17,14 @@
         </li>
       </ng-container>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/errors" routerLinkActive="active">Error</a>
+        <a class="nav-link" routerLink="/member/edit" routerLinkActive="active">Error</a>
       </li>
     </ul>
-    <div class="dropdown" *ngIf="accountService.currentUser$ | async" ngbDropdown>
-      <a class="dropdown-toggle text-light text-decoration-none" ngbDropdownToggle>Welcome user</a>
-      <div class="dropdown-menu" ngbDropdownMenu>
-        <a href="" class="dropdown-item" ngbDropdownItem >Edit Profile</a>
-        <a href="" class="dropdown-item" ngbDropdownItem (click)="logout()">Logout</a>
+    <div class="dropdown" *ngIf="accountService.currentUser$ | async" dropdown>
+      <a class="dropdown-toggle text-light text-decoration-none" dropdownToggle>Welcome user</a>
+      <div class="dropdown-menu mt-3" *dropdownMenu>
+        <a href="" class="dropdown-item" routerLink="/member/edit">Edit Profile</a>
+        <a href="" class="dropdown-item" (click)="logout()">Logout</a>
       </div>
     </div>
     <form

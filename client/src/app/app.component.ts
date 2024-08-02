@@ -1,7 +1,7 @@
 
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, importProvidersFrom, OnInit } from '@angular/core';
 import { RouterOutlet, provideRouter } from '@angular/router';
 import { NavComponent } from "./nav/nav.component";
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap'
@@ -16,6 +16,9 @@ import { provideToastr, ToastrModule } from 'ngx-toastr';
 import { routes } from './app.routes';
 import { errorInterceptor } from './_interceptors/error.interceptor';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
+import { JwtInterceptor } from './_interceptors/jwt.interceptor';
+import { LoadingInterceptor } from './_interceptor/loading.interceptor';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @Component({
     selector: 'app-root',
@@ -23,7 +26,7 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
     imports: [RouterOutlet, CommonModule, NavComponent,HomeComponent,
-      RegisterComponent, NgbDropdownModule,ToastrModule,NotFoundComponent],
+      RegisterComponent, NgbDropdownModule,ToastrModule,NotFoundComponent,NgxSpinnerModule],
     providers: []
   })
 export class AppComponent implements OnInit {
@@ -45,12 +48,17 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes),
     provideHttpClient(withInterceptorsFromDi()),
     {provide: HTTP_INTERCEPTORS, useClass: errorInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
     provideAnimations(), // required animations providers
     provideToastr({
       positionClass: 'toast-bottom-right',
       timeOut: 1000,
       progressBar: true,
       progressAnimation: 'decreasing',
-    }) // Toastr providers
+    }), // Toastr providers
+    importProvidersFrom(NgxSpinnerModule.forRoot({
+      type: 'line-scale-party'
+    }))
   ]
 });

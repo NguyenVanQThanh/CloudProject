@@ -7,12 +7,16 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, of } from 'rxjs';
 import { User } from '../_models/user';
 import { ToastrService } from 'ngx-toastr';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @Component({
   selector: 'app-nav',
   standalone: true,
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css',
-  imports: [RouterOutlet, CommonModule, NavComponent, FormsModule, NgbDropdownModule,RouterModule],
+  imports: [RouterOutlet, CommonModule, NavComponent, FormsModule, NgbDropdownModule,RouterModule
+    ,BsDropdownModule
+  ],
 })
 export class NavComponent implements OnInit {
   model: any = {};
@@ -36,6 +40,7 @@ export class NavComponent implements OnInit {
         this.router.navigateByUrl("/members");
       },
       error: (error) => {
+        console.log(error);
         this.toastr.error(error.error);
       }
     });

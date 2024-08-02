@@ -11,3 +11,7 @@
   padding: 10px 15px;
   background-color: #fff;
 }
+.ngx-gallery{
+  display: inline-block;
+  margin-top: 20px;
+}
