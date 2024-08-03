@@ -18,8 +18,7 @@ export class AccountService {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         const user = response;
         if (user){
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSource.next(user);
+          this.setCurrentUser(user);
         }
       })
     );
@@ -30,14 +29,14 @@ export class AccountService {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         const user = response;
         if (user){
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSource.next(user);
+          this.setCurrentUser(user);
         }
         // return user;
       })
     )
   }
   setCurrentUser(user: User){
+    localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
   }
   logout(){
