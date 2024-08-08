@@ -11,7 +11,7 @@ import { errorInterceptor } from './app/_interceptors/error.interceptor';
 import { JwtInterceptor } from './app/_interceptors/jwt.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterceptor } from './app/_interceptor/loading.interceptor';
-
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'
 
 const additionalProviders = [
   importProvidersFrom(BsDropdownModule.forRoot()),
@@ -29,7 +29,8 @@ const additionalProviders = [
     }), // Toastr providers,
   importProvidersFrom(NgxSpinnerModule.forRoot({
     type: 'line-scale-party'
-  }))
+  })),
+  importProvidersFrom(BsDatepickerModule.forRoot())
 ];
 
 bootstrapApplication(AppComponent, { ...appConfig, providers: [...appConfig.providers, ...additionalProviders] })

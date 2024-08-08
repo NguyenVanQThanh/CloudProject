@@ -11,14 +11,16 @@ import { GALLERY_CONFIG, GalleryConfig, GalleryItem, GalleryModule, ImageItem } 
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { PhotoEditorComponent } from "../photo-editor/photo-editor.component";
 
 @Component({
   selector: 'app-member-edit',
   standalone: true,
-  imports: [CommonModule, NgbNavModule, GalleryModule, TabsModule, FormsModule, PhotoEditorComponent],
+  imports: [CommonModule, NgbNavModule, GalleryModule, TabsModule, FormsModule, PhotoEditorComponent,
+    ReactiveFormsModule
+  ],
   templateUrl: './member-edit.component.html',
   styleUrl: './member-edit.component.css'
 })
