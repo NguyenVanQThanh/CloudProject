@@ -7,10 +7,11 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TimeagoModule } from 'ngx-timeago';
 @Component({
   selector: 'app-member-detail',
   standalone: true,
-  imports: [CommonModule,NgbNavModule,GalleryModule,TabsModule,RouterModule],
+  imports: [CommonModule,NgbNavModule,GalleryModule,TabsModule,RouterModule, TimeagoModule],
   templateUrl: './member-detail.component.html',
   styleUrl: './member-detail.component.css'
 })

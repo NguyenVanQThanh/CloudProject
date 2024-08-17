@@ -14,7 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   standalone: true,
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css',
-  imports: [RouterOutlet, CommonModule, NavComponent, FormsModule, NgbDropdownModule,RouterModule
+  imports: [RouterOutlet, CommonModule, FormsModule, NgbDropdownModule,RouterModule
     ,BsDropdownModule
   ],
 })

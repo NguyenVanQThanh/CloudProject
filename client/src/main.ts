@@ -1,3 +1,4 @@
+import { TimeagoModuleConfig } from './../node_modules/ngx-timeago/timeago.module.d';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { importProvidersFrom } from '@angular/core';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -12,6 +13,10 @@ import { JwtInterceptor } from './app/_interceptors/jwt.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterceptor } from './app/_interceptor/loading.interceptor';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'
+import { PaginationModule } from 'ngx-bootstrap/pagination'
+import { ButtonsModule } from 'ngx-bootstrap/buttons'
+import { TimeagoModule } from "ngx-timeago";
+
 
 const additionalProviders = [
   importProvidersFrom(BsDropdownModule.forRoot()),
@@ -30,7 +35,10 @@ const additionalProviders = [
   importProvidersFrom(NgxSpinnerModule.forRoot({
     type: 'line-scale-party'
   })),
-  importProvidersFrom(BsDatepickerModule.forRoot())
+  importProvidersFrom(BsDatepickerModule.forRoot()),
+  importProvidersFrom(PaginationModule.forRoot()),
+  importProvidersFrom(ButtonsModule.forRoot()),
+  importProvidersFrom(TimeagoModule.forRoot())
 ];
 
 bootstrapApplication(AppComponent, { ...appConfig, providers: [...appConfig.providers, ...additionalProviders] })

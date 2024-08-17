@@ -19,6 +19,7 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { LoadingInterceptor } from './_interceptor/loading.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @Component({
     selector: 'app-root',
@@ -59,6 +60,7 @@ bootstrapApplication(AppComponent, {
     }), // Toastr providers
     importProvidersFrom(NgxSpinnerModule.forRoot({
       type: 'line-scale-party'
-    }))
+    })),
+    importProvidersFrom(PaginationModule.forRoot()),
   ]
 });
