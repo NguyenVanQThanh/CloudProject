@@ -39,12 +39,20 @@ namespace API.Controllers
                 user.PasswordSalt = hmac.Key;
             _context.Users.Add(user);
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
             return Ok(new UserDTO{
                 Username = user.UserName,
                 Token = _tokenService.CreateToken(user),
                 KnownAs = user.KnownAs,
-                Gender  = user.Gender
+                Gender  = user.Gender,
+                PhotoUrl = user.Photos.FirstOrDefault(x=>x.IsMain)?.Url
             });
         }
         [HttpPost("login")]

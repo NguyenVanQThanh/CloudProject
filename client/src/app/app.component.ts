@@ -17,7 +17,7 @@ import { routes } from './app.routes';
 import { errorInterceptor } from './_interceptors/error.interceptor';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
-import { LoadingInterceptor } from './_interceptor/loading.interceptor';
+import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 

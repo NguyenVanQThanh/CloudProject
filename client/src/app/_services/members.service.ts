@@ -30,6 +30,7 @@ export class MembersService {
   getMembers(userParams: UserParams) {
     const response = this.membersCache.get(Object.values(userParams).join('-'));
     if (response) {
+      console.log("Get Response");
       return of(response);
     }
     let params = this.getPaginationHeaders(
@@ -44,9 +45,11 @@ export class MembersService {
     return this.getPaginationResult<Member[]>(
       this.baseUrl + 'users',
       params
-    ).pipe(
+    )
+    .pipe(
       map((response) => {
         this.membersCache.set(Object.values(userParams).join('-'), response);
+        return response;
       })
     );
   }
@@ -82,6 +85,14 @@ export class MembersService {
   }
   deletePhoto(photoId: Number) {
     return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
+  }
+  addLike(username: string){
+    return this.http.post(this.baseUrl + 'likes/' + username,{});
+  }
+  getLikes(predicate: string, pageNumber: number, pageSize: number){
+    let params = this.getPaginationHeaders(pageNumber, pageSize);
+    params = params.append('predicate', predicate);
+    return this.getPaginationResult<Member[]>(this.baseUrl + 'likes', params);
   }
   getUserParams(){
     return this.userParams;

@@ -11,7 +11,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { errorInterceptor } from './app/_interceptors/error.interceptor';
 import { JwtInterceptor } from './app/_interceptors/jwt.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { LoadingInterceptor } from './app/_interceptor/loading.interceptor';
+import { LoadingInterceptor } from './app/_interceptors/loading.interceptor';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'
 import { PaginationModule } from 'ngx-bootstrap/pagination'
 import { ButtonsModule } from 'ngx-bootstrap/buttons'
