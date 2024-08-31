@@ -62,5 +62,6 @@ bootstrapApplication(AppComponent, {
       type: 'line-scale-party'
     })),
     importProvidersFrom(PaginationModule.forRoot()),
+  
   ]
 });

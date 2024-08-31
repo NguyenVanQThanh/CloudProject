@@ -17,6 +17,8 @@ namespace API.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services,
         IConfiguration config)
         {
+            services.AddControllersWithViews()
+            .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddEndpointsApiExplorer();
             services.AddDbContext<DataContext>(opt => {
                 opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
@@ -25,6 +27,7 @@ namespace API.Extensions
             services.AddScoped<ITokenService,TokenService>();
             services.AddScoped<IUserRepository,UserRepository>();
             services.AddScoped<ILikesRepository,LikesRepository>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
             services.AddScoped<IPhotoService, PhotoService>();

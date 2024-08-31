@@ -19,7 +19,4 @@ namespace API.Interfaces
         Task<MemberDTOs> GetMemberAsync(string username);
     }
 
-    public class UserParms
-    {
-    }
 }

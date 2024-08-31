@@ -15,7 +15,7 @@ import { LoadingInterceptor } from './app/_interceptors/loading.interceptor';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'
 import { PaginationModule } from 'ngx-bootstrap/pagination'
 import { ButtonsModule } from 'ngx-bootstrap/buttons'
-import { TimeagoModule } from "ngx-timeago";
+import { TimeagoCustomFormatter, TimeagoModule } from "ngx-timeago";
 
 
 const additionalProviders = [
@@ -38,7 +38,7 @@ const additionalProviders = [
   importProvidersFrom(BsDatepickerModule.forRoot()),
   importProvidersFrom(PaginationModule.forRoot()),
   importProvidersFrom(ButtonsModule.forRoot()),
-  importProvidersFrom(TimeagoModule.forRoot())
+  importProvidersFrom(TimeagoModule.forRoot()),
 ];
 
 bootstrapApplication(AppComponent, { ...appConfig, providers: [...appConfig.providers, ...additionalProviders] })

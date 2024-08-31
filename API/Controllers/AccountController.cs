@@ -61,7 +61,7 @@ namespace API.Controllers
             .SingleOrDefaultAsync(x =>
                  x.UserName == loginDTO.Username);
             if (user == null) {
-                return Unauthorized(); 
+                return Unauthorized("User not existed"); 
             }
             using var hmac = new HMACSHA512(user.PasswordSalt);
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDTO.Password));

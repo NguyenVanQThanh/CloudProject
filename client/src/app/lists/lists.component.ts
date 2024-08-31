@@ -6,11 +6,12 @@ import { FormsModule } from '@angular/forms';
 import { MemberCardComponent } from '../members/member-card/member-card.component';
 import { Pagination } from '../_models/pagination';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 @Component({
   selector: 'app-lists',
   standalone: true,
-  imports: [CommonModule,FormsModule,MemberCardComponent,PaginationModule],
+  imports: [CommonModule,FormsModule,MemberCardComponent,PaginationModule,ButtonsModule],
   templateUrl: './lists.component.html',
   styleUrl: './lists.component.css'
 })
