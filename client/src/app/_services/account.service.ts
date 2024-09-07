@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { User } from '../_models/user';
 import { environment } from '../../environments/environment';
@@ -9,8 +9,17 @@ import { environment } from '../../environments/environment';
 })
 export class AccountService {
   baseUrl = environment.apiUrl;
-  private currentUserSource = new BehaviorSubject<User | null>(null);
-  currentUser$ = this.currentUserSource.asObservable();
+  // private currentUserSource = new BehaviorSubject<User | null>(null);
+  // currentUser$ = this.currentUserSource.asObservable();
+  currentUser = signal<User | null> (null);
+  roles = computed(()=>{
+    const user = this.currentUser();
+    if (user && user.token){
+      const role =  JSON.parse(atob(user.token.split('.')[1])).role
+      return Array.isArray(role) ? role : [role];
+    }
+    return [];
+  })
   constructor(private http: HttpClient) {}
   login(model: any){
     return this.http.post<User>(`${this.baseUrl}account/login`, model).pipe(
@@ -37,10 +46,11 @@ export class AccountService {
   }
   setCurrentUser(user: User){
     localStorage.setItem('user', JSON.stringify(user));
-    this.currentUserSource.next(user);
+    this.currentUser.set(user);
+    // this.like
   }
   logout(){
     localStorage.removeItem('user');
-    this.currentUserSource.next(null);
+    this.currentUser.set(null);
   }
 }

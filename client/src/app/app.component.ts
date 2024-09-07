@@ -20,6 +20,7 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @Component({
     selector: 'app-root',
@@ -49,8 +50,8 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes),
     provideHttpClient(withInterceptorsFromDi()),
     {provide: HTTP_INTERCEPTORS, useClass: errorInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
+    provideHttpClient(withInterceptors([JwtInterceptor])),
     provideAnimations(), // required animations providers
     provideToastr({
       positionClass: 'toast-bottom-right',
@@ -61,7 +62,7 @@ bootstrapApplication(AppComponent, {
     importProvidersFrom(NgxSpinnerModule.forRoot({
       type: 'line-scale-party'
     })),
-    importProvidersFrom(PaginationModule.forRoot()),
-  
+    importProvidersFrom(PaginationModule.forRoot(), ModalModule.forRoot()),
+
   ]
 });

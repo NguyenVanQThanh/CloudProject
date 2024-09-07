@@ -9,13 +9,14 @@ import { User } from '../_models/user';
 import { ToastrService } from 'ngx-toastr';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HasRoleDirective } from '../_directives/has-role.directive';
 @Component({
   selector: 'app-nav',
   standalone: true,
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css',
   imports: [RouterOutlet, CommonModule, FormsModule, NgbDropdownModule,RouterModule
-    ,BsDropdownModule
+    ,BsDropdownModule, HasRoleDirective
   ],
 })
 export class NavComponent implements OnInit {

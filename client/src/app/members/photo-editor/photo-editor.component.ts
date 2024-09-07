@@ -1,5 +1,5 @@
 import { MembersService } from './../../_services/members.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { Member } from '../../_models/member';
 import { CommonModule } from '@angular/common';
 import {FileUploader, FileUploadModule} from 'ng2-file-upload';
@@ -20,15 +20,9 @@ export class PhotoEditorComponent implements OnInit {
   uploader: FileUploader | undefined;
   hasBaseDropZoneOver = false;
   baseUrl = environment.apiUrl;
-  user: User | undefined;
-  constructor(private accountService : AccountService, private memberService : MembersService) {
-    this.accountService.currentUser$.pipe(take(1)).subscribe({
-      next: user =>{
-        if (user){
-          this.user = user;
-        }
-      }
-    })
+  accountService = inject(AccountService);
+  user = this.accountService.currentUser();
+  constructor(private memberService : MembersService) {
   }
   ngOnInit(): void {
     this.initializeUploader();

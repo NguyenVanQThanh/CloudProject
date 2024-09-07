@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, model, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Member } from '../_models/member';
@@ -15,19 +15,14 @@ import { getPaginationHeaders, getPaginationResult } from './paginationHelper';
 export class MembersService {
   baseUrl = environment.apiUrl;
   members: Member[] = [];
+  private accountService = inject(AccountService)
   membersCache = new Map();
-  user: User | undefined;
-  userParams: UserParams | undefined;
-  constructor(private http: HttpClient, private accountService : AccountService) {
-    this.accountService.currentUser$.pipe(take(1)).subscribe({
-      next: user => {
-        if (user){
-          this.userParams = new UserParams(user);
-          this.user = user;
-        }
-      }
-    })
+  user = this.accountService.currentUser();
+  userParams =  signal<UserParams>(new UserParams(this.user));
+  constructor(private http: HttpClient) {
+
   }
+
   getMembers(userParams: UserParams) {
     const response = this.membersCache.get(Object.values(userParams).join('-'));
     if (response) {
@@ -100,14 +95,10 @@ export class MembersService {
     return this.userParams;
   }
   setUserParams(params: UserParams){
-    this.userParams = params;
+    this.userParams.set(params);
   }
   resetUserParams(){
-    if (this.user){
-      this.userParams = new UserParams(this.user);
-      return this.userParams;
-    }
-    return;
+    this.userParams.set(new UserParams(this.user));
   }
 
 }

@@ -27,6 +27,7 @@ export class MessagesComponent implements OnInit{
   constructor(private messageService: MessagesService, private router : Router){}
   ngOnInit(): void {
     this.loadMessages();
+    // console.log(this.messages);
   }
   loadMessages(){
     this.loading = true;

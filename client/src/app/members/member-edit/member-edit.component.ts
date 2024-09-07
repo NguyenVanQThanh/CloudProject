@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, inject, OnInit, ViewChild } from '@angular/core';
 import { Member } from '../../_models/member';
 import { User } from '../../_models/user';
 import { HttpClient } from '@angular/common/http';
@@ -34,23 +34,17 @@ export class MemberEditComponent implements OnInit{
   }
   member: Member | undefined;
   images: GalleryItem[] = [];
-  user: User | undefined;
-  constructor(private memberService:MembersService, private accountService:AccountService,
+  accountService = inject(AccountService);
+  user = this.accountService.currentUser();
+  constructor(private memberService:MembersService,
      private route: ActivatedRoute, private toastr : ToastrService){
-    this.accountService.currentUser$.pipe(take(1)).subscribe({
-      next: user => {
-        if (user){
-          this.user = user;
-        }
-      }
-    })
   }
   ngOnInit(): void {
     this.loadMember();
   }
   loadMember(){
     if (!this.user) return;
-    this.memberService.getMember(this.user.username).subscribe({
+    this.memberService.getMember(this.user.userName).subscribe({
       next: member => {
         console.log(member);
         this.member = member;

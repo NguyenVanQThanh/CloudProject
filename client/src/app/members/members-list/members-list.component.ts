@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Member } from '../../_models/member';
 import { MembersService } from '../../_services/members.service';
 import { CommonModule, NgFor } from '@angular/common';
@@ -20,29 +20,33 @@ import { AccountService } from '../../_services/account.service';
   styleUrl: './members-list.component.css'
 })
 export class MembersListComponent implements OnInit {
-  // memeber$: Observable<Member[]> | undefined;
+  // member$: Observable<Member[]> | undefined;
   members: Member[] = [] ;
   pagination: Pagination | undefined;
-  userParams: UserParams | undefined;
+  memberService = inject(MembersService);
+  userParams = this.memberService.getUserParams();
   genderList = [{ value: 'male', display: 'Males' }, { value: 'female', display: 'Females' }];
-  constructor(private memberService: MembersService) {
-    this.userParams = this.memberService.getUserParams();
-   }
   ngOnInit(): void {
+    console.log('Start Init');
     // this.members$ = this.memberService.getMembers();
     this.loadMembers();
+    console.log(this.members);
+    console.log('End Init');
     // console.log(this.pagination);
   }
   loadMembers(){
     if (this.userParams){
-      this.memberService.setUserParams(this.userParams);
-      this.memberService.getMembers(this.userParams).subscribe({
+      this.memberService.setUserParams(this.userParams());
+      this.memberService.getMembers(this.userParams()).subscribe({
         next: response => {
-          console.log(response);
+          console.log("Start loading members");
+          // console.log(response);
           if (response.result && response.pagination){
             this.members = response.result;
             this.pagination = response.pagination;
           }
+          console.log(this.members);
+          console.log("Finished loading members");
           // console.log(this.pagination);
           // return this.pagination;
         }
@@ -51,13 +55,13 @@ export class MembersListComponent implements OnInit {
 
   }
   resetFilters(){
-      this.userParams = this.memberService.resetUserParams();
+      this.memberService.resetUserParams();
       this.loadMembers();
   }
   pageChanged(event: any){
-    if (this.userParams && this.userParams?.pageNumber !== event.page){
-      this.userParams.pageNumber = event.page;
-      this.memberService.setUserParams(this.userParams);
+    if (this.userParams && this.userParams().pageNumber !== event.page){
+      this.userParams().pageNumber = event.page;
+      this.memberService.setUserParams(this.userParams());
       this.loadMembers();
     }
   }

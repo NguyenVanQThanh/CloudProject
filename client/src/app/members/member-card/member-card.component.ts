@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-member-card',
   standalone: true,
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule,RouterModule, RouterLink],
   templateUrl: './member-card.component.html',
   styleUrl: './member-card.component.css'
 })

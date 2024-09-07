@@ -9,7 +9,6 @@ import { Message } from '../_models/Message';
 })
 export class MessagesService {
   baseUrl = environment.apiUrl;
-
   constructor(private http: HttpClient) { }
   getMessages(pageNumber: number, pageSize: number,container: string ){
     let params = getPaginationHeaders(pageNumber,pageSize);

@@ -7,14 +7,11 @@ import { map } from 'rxjs';
 export const authGuard: CanActivateFn = (route, state) => {
   const accountService = inject(AccountService);
   const toastr = inject(ToastrService);
-  return accountService.currentUser$.pipe(
-    map(user => {
-      if (user) {
-        return true;
-      } else {
-        toastr.error('You need to be logged in to access this page.');
-        return false;
-      }
-    })
-  )
+  if (accountService.currentUser()){
+    return true;
+  }
+  else {
+    toastr.error('You need to be logged in to access this page.');
+    return false;
+  }
 };
