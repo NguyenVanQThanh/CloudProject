@@ -17,6 +17,8 @@ namespace API.Data
         }
         public DbSet<UserLike> Likes { get; private set; }
         public DbSet<Message> Messages { get; private set; }
+        public DbSet<Group> Groups { get; private set; }
+        public DbSet<Connection> Connections { get; private set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { User } from '../_models/user';
 import { environment } from '../../environments/environment';
+import { PresenceService } from './presence.service';
+import { LikesService } from './likes.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +13,8 @@ export class AccountService {
   baseUrl = environment.apiUrl;
   // private currentUserSource = new BehaviorSubject<User | null>(null);
   // currentUser$ = this.currentUserSource.asObservable();
+  private presenceService = inject(PresenceService);
+  private likesService = inject(LikesService);
   currentUser = signal<User | null> (null);
   roles = computed(()=>{
     const user = this.currentUser();
@@ -47,10 +51,14 @@ export class AccountService {
   setCurrentUser(user: User){
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUser.set(user);
-    // this.like
+    this.likesService.getLikeIds();
+    this.presenceService.createHubConnection(user);
+    console.log(this.likesService.likeIds);
   }
+
   logout(){
     localStorage.removeItem('user');
     this.currentUser.set(null);
+    this.presenceService.stopHubConnection();
   }
 }

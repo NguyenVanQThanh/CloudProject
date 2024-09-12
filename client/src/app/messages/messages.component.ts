@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Message } from '../_models/Message';
 import { Pagination } from '../_models/pagination';
 import { MessagesService } from '../_services/messages.service';
@@ -24,7 +24,8 @@ export class MessagesComponent implements OnInit{
   pageNumber = 1;
   pageSize = 5;
   loading = false;
-  constructor(private messageService: MessagesService, private router : Router){}
+  messageService = inject(MessagesService);
+  constructor(private router : Router){}
   ngOnInit(): void {
     this.loadMessages();
     // console.log(this.messages);

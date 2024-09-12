@@ -27,11 +27,11 @@ export class MembersListComponent implements OnInit {
   userParams = this.memberService.getUserParams();
   genderList = [{ value: 'male', display: 'Males' }, { value: 'female', display: 'Females' }];
   ngOnInit(): void {
-    console.log('Start Init');
+    // console.log('Start Init');
     // this.members$ = this.memberService.getMembers();
     this.loadMembers();
-    console.log(this.members);
-    console.log('End Init');
+    // console.log(this.members);
+    // console.log('End Init');
     // console.log(this.pagination);
   }
   loadMembers(){
@@ -39,14 +39,14 @@ export class MembersListComponent implements OnInit {
       this.memberService.setUserParams(this.userParams());
       this.memberService.getMembers(this.userParams()).subscribe({
         next: response => {
-          console.log("Start loading members");
+          // console.log("Start loading members");
           // console.log(response);
           if (response.result && response.pagination){
             this.members = response.result;
             this.pagination = response.pagination;
           }
-          console.log(this.members);
-          console.log("Finished loading members");
+          // console.log(this.members);
+          // console.log("Finished loading members");
           // console.log(this.pagination);
           // return this.pagination;
         }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, input, Input, OnInit, ViewChild } from '@angular/core';
 import { Message } from '../../_models/Message';
 import { MessagesService } from '../../_services/messages.service';
 import { CommonModule } from '@angular/common';
@@ -14,20 +14,16 @@ import { FormsModule, NgForm } from '@angular/forms';
 })
 export class MemberMessagesComponent implements OnInit {
   @ViewChild('messageForm') messageForm? : NgForm
-  @Input() messages : Message[] = []
-  @Input() username? : string;
+  messageService = inject(MessagesService);
+  userName = input.required<string>();
   messageContent = '';
-  constructor(private messageService : MessagesService){}
   ngOnInit(): void {
 
   }
   sendMessage(){
-    if (!this.username) return;
-    this.messageService.sendMessage(this.username, this.messageContent).subscribe({
-      next: message => {
-        this.messages.push(message);
-        this.messageForm?.reset();
-      }
+    if (!this.userName()) return;
+    this.messageService.sendMessage(this.userName(), this.messageContent).then(()=> {
+      this.messageForm?.reset();
     })
   }
 

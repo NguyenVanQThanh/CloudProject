@@ -1,5 +1,5 @@
 <div class="text-center mt-3">
-  <h2>{{predicate === 'liked' ? 'Members I like' : "Members who like me"}}</h2>
+  <h2>{{getTitle()}}</h2>
 </div>
 <div class="container mt-3">
   <div class="d-flex">
@@ -7,6 +7,8 @@
     (click)="loadLikes()">Members I like</div>
     <div class="btn btn-group btn-primary m-3" btnRadio="likedBy" [(ngModel)]="predicate"
     (click)="loadLikes()">Members who like me</div>
+    <div class="btn btn-group btn-primary m-3" btnRadio="likedBy" [(ngModel)]="predicate"
+    (click)="loadLikes()">Mutual</div>
   </div>
   <div class="row mt-3">
     <div class="col-2" *ngFor="let member of members">
