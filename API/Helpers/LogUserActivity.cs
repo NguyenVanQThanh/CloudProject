@@ -16,13 +16,12 @@ namespace API.Helpers
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var resultContext = await next();
-            if (!resultContext.HttpContext.User.Identity.IsAuthenticated) return;
-            
+            if (context.HttpContext.User.Identity?.IsAuthenticated != true) return;
             var userId = resultContext.HttpContext.User.GetUserId();
-            var repo = resultContext.HttpContext.RequestServices.GetRequiredService<IUserRepository>(); 
-            var user = await repo.GetByIdAsync(userId);
+            var repo = resultContext.HttpContext.RequestServices.GetRequiredService<IUnitOfWork>(); 
+            var user = await repo.UserRepository.GetByIdAsync(userId);
             user.LastActive = DateTime.UtcNow;
-            await repo.SaveAllAsync();
+            await repo.Complete();
             
         }
     }

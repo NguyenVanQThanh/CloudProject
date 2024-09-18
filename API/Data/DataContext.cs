@@ -19,6 +19,7 @@ namespace API.Data
         public DbSet<Message> Messages { get; private set; }
         public DbSet<Group> Groups { get; private set; }
         public DbSet<Connection> Connections { get; private set; }
+        public DbSet<Photo> Photos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -36,6 +37,7 @@ namespace API.Data
             .HasForeignKey(ur => ur.RoleId)
             .IsRequired();
 
+
             modelBuilder.Entity<UserLike>()
                 .HasKey(ul => new { ul.SourceUserId, ul.TargetUserId });
             modelBuilder.Entity<UserLike>()
@@ -48,7 +50,7 @@ namespace API.Data
                 .HasOne(ul => ul.TargetUser)
                 .WithMany(l => l.LikeByUsers)
                 .HasForeignKey(t => t.TargetUserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Message>()
                 .HasOne(m => m.Sender)
                 .WithMany(u => u.MessagesSent)
@@ -59,6 +61,9 @@ namespace API.Data
                 .WithMany(u => u.MessagesReceived)
                 .HasForeignKey(m => m.RecipientId)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Photo>().HasQueryFilter(p=>p.IsApproved);
+            
+
         }
     }
 }

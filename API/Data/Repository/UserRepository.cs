@@ -34,22 +34,14 @@ namespace API.Data.Repository
                     .FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public async Task<MemberDTOs> GetMemberAsync(string username)
+        public async Task<MemberDTOs> GetMemberAsync(string username, bool isCurrentUser)
         {
-            var user = await _context.Users
-                        .Where(u => u.UserName == username)
-                        .ProjectTo<MemberDTOs>(_mapper.ConfigurationProvider)
-                        // .Select(user => new MemberDTOs{
-                        //     Id = user.Id,
-                        //     UserName = user.UserName,
-                        //     KnownAs = user.KnownAs,
-                        //     Age = user.DateOfBirth.CalculateAge(),
-                        //     Created = user.Created,
-                        //     LastActive = user.LastActive,
-                        //     Gender = user.Gender
-                        // })
-                        .SingleOrDefaultAsync();
-            return user;
+            var query = _context.Users
+                .Where(x => x.UserName == username)
+                .ProjectTo<MemberDTOs>(_mapper.ConfigurationProvider)
+                .AsQueryable();
+            if (isCurrentUser) query = query.IgnoreQueryFilters();
+            return await query.FirstOrDefaultAsync();
         }
 
         public async Task<PagedList<MemberDTOs>> GetMembersAsync(UserParams userParams)
@@ -66,6 +58,15 @@ namespace API.Data.Repository
            };
             return await PagedList<MemberDTOs>.CreateAsync(query.AsNoTracking().ProjectTo<MemberDTOs>(_mapper.ConfigurationProvider),
              userParams.PageNumber, userParams.PageSize);
+        }
+
+        public async Task<AppUser?> GetUserByPhotoId(int photoId)
+        {
+            return await _context.Users
+                .Include(p => p.Photos)
+                .IgnoreQueryFilters()
+                .Where(p=>p.Photos.Any(p=>p.Id == photoId))
+                .FirstOrDefaultAsync();
         }
 
         public async Task<AppUser> GetUserByUserName(string userName)

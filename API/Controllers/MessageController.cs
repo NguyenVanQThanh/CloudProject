@@ -12,25 +12,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    public class MessageController : BaseApiController
+    public class MessageController(IUnitOfWork unitOfWork, IMapper _mapper) : BaseApiController
     {
-        private readonly IMapper _mapper;
-        private readonly IUserRepository _userRepository;
-        private readonly IMessageRepository _messageRepository;
-
-        public MessageController(IUserRepository userRepository, IMessageRepository messageRepository, IMapper mapper){
-            _mapper = mapper;
-            _userRepository = userRepository;
-            _messageRepository = messageRepository;
-        }
         [HttpPost]
         public async Task<ActionResult<MessageDto>> CreateMessage(CreateMessageDto createMessageDto){
             var username = User.GetUserName();
             if (username == createMessageDto.RecipientUsername.ToLower()){
                 return BadRequest("You cannot send a message to yourself");
             }
-            var sender = await _userRepository.GetUserByUserName(username);
-            var recipient = await _userRepository.GetUserByUserName(createMessageDto.RecipientUsername);
+            var sender = await unitOfWork.UserRepository.GetUserByUserName(username);
+            var recipient = await unitOfWork.UserRepository.GetUserByUserName(createMessageDto.RecipientUsername);
 
             if (recipient == null) return NotFound("Couldn't find");
             var message = new Message{
@@ -43,14 +34,14 @@ namespace API.Controllers
                 RecipientDeleted = false,
                 DateRead = null
             };
-            _messageRepository.AddMessage(message);
-            if (await _messageRepository.SaveChangesAsync()) return Ok(_mapper.Map<MessageDto>(message));
+            unitOfWork.MessageRepository.AddMessage(message);
+            if (await unitOfWork.Complete()) return Ok(_mapper.Map<MessageDto>(message));
             return BadRequest("Failed to send message");
         }
         [HttpGet]
         public async Task<ActionResult<List<MessageDto>>> GetMessagesForUser([FromQuery] MessageParams messageParams){
             messageParams.Username = User.GetUserName();
-            var messages = await _messageRepository.GetMessageForUser(messageParams);
+            var messages = await unitOfWork.MessageRepository.GetMessageForUser(messageParams);
             Response.AddPaginationHeader( new PaginationHeader(messages.CurrentPage, messages.PageSize
             , messages.TotalCount, messages.TotalPages));
             return Ok(messages);
@@ -58,21 +49,21 @@ namespace API.Controllers
         [HttpGet("thread/{username}")]
         public async Task<ActionResult<IEnumerable<MessageDto>>> GetMessageThread(string username){
             var currentUsername = User.GetUserName();
-            return Ok(await _messageRepository.GetMessagesThread(currentUsername,username));
+            return Ok(await unitOfWork.MessageRepository.GetMessagesThread(currentUsername,username));
         }
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMessage(int id){
             var username = User.GetUserName();
-            var message = await _messageRepository.GetMessage(id);
+            var message = await unitOfWork.MessageRepository.GetMessage(id);
             if (message.SenderUsername != username && message.RecipientUsername != username){
                 return Unauthorized();
             }
             if (message.SenderUsername == username) message.SenderDeleted = true;
             if (message.RecipientUsername == username) message.RecipientDeleted = true;
             if (message.SenderDeleted && message.RecipientDeleted){
-                _messageRepository.DeleteMessage(message);
+                unitOfWork.MessageRepository.DeleteMessage(message);
             }
-            if (await _messageRepository.SaveChangesAsync()) return Ok();
+            if (await unitOfWork.Complete()) return Ok();
             return BadRequest("Fail to delete message");
         }
     }

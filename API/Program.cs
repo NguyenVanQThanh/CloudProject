@@ -3,6 +3,7 @@ using API.Entities;
 using API.Extensions;
 using API.Middleware;
 using API.SignalR;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +31,9 @@ app.UseCors(builder => builder.AllowAnyHeader().AllowCredentials()
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseDefaultFiles();
+app.UseStaticFiles();
+app.MapFallbackToController("Index","Fallback");
 
 app.MapControllers();
 app.MapHub<PresenceHub>("hubs/presence");
