@@ -40,13 +40,14 @@ export class MemberEditComponent implements OnInit{
      private route: ActivatedRoute, private toastr : ToastrService){
   }
   ngOnInit(): void {
+    // console.log(this.user);
     this.loadMember();
   }
   loadMember(){
     if (!this.user) return;
+    console.log(this.user.userName);
     this.memberService.getMember(this.user.userName).subscribe({
       next: member => {
-        console.log(member);
         this.member = member;
       }
     })

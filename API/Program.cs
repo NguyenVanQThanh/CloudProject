@@ -47,7 +47,7 @@ try{
     var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
     await context.Database.MigrateAsync();
     // await Seed.SeedUsers(context);
-    await Seed.SeedUsers(userManager, roleManager);
+    // await Seed.SeedUsers(userManager, roleManager);
 }catch(Exception e){
     var logger = services.GetService<ILogger<Program>>();
     logger.LogError(e, "An error occurred during seeding the database.");
