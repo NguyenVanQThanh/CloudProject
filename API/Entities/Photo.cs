@@ -15,7 +15,6 @@ namespace API.Entities
         public bool IsApproved { get; set; } = false;
         public string? PublicId { get; set; }
         public int AppUserId { get; set; }
-        public AppUser AppUser { get; set; } = null!; // Navigation property for the user who uploaded the photo.
-
+        public AppUser? AppUser { get; set; } = null!; // Navigation property for the user who uploaded the photo.
     }
 }
