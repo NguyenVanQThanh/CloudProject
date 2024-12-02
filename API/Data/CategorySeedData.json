@@ -1,0 +1,10 @@
+[{"Name":"Electronics", "Status":true, "CreatedAt":"2023-04-24", "UpdatedAt":"2023-04-24"},
+ {"Name":"Mens Fashion", "Status":true, "CreatedAt":"2023-05-07", "UpdatedAt":"2023-05-07"},
+ {"Name":"Womens Fashion", "Status":true, "CreatedAt":"2023-05-07", "UpdatedAt":"2023-05-07"},
+ {"Name":"Shoes", "Status":true, "CreatedAt":"2023-05-07", "UpdatedAt":"2023-05-07"},
+ {"Name":"Health and Beauty", "Status":true, "CreatedAt":"2023-05-07", "UpdatedAt":"2023-05-07"},
+ {"Name":"Groceries", "Status":true, "CreatedAt":"2023-05-07", "UpdatedAt":"2023-05-07"},
+ {"Name":"Home and Life", "Status":true, "CreatedAt":"2023-05-07", "UpdatedAt":"2023-05-07"},
+ {"Name":"Sports and Outdoors", "Status":true, "CreatedAt":"2023-05-07", "UpdatedAt":"2023-05-07"},
+ {"Name":"Automotive", "Status":true, "CreatedAt":"2023-05-07", "UpdatedAt":"2023-05-07"},
+ {"Name":"Babies and Toys", "Status":true, "CreatedAt":"2023-05-07", "UpdatedAt":"2023-05-08"}]

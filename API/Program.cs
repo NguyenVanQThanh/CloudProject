@@ -1,9 +1,9 @@
 using API.Data;
+using API.Data.Repository;
 using API.Entities;
 using API.Extensions;
 using API.Middleware;
 using API.SignalR;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
@@ -47,7 +47,9 @@ try{
     var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
     await context.Database.MigrateAsync();
     // await Seed.SeedUsers(context);
-    await Seed.SeedUsers(userManager, roleManager);
+    // await Seed.SeedUsers(userManager, roleManager);
+    // await Seed.SeedCategory(context);
+    // await Seed.SeedProduct(context);
 }catch(Exception e){
     var logger = services.GetService<ILogger<Program>>();
     logger.LogError(e, "An error occurred during seeding the database.");

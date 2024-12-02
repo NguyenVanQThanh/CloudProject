@@ -4,7 +4,10 @@
     <tab heading="User management" *appHasRole="['Admin']">
       <app-user-management></app-user-management>
     </tab>
-    <tab heading="Photo management" *appHasRole="['Admin', 'Moderate']">
+    <tab heading="Photo management" *appHasRole="['Admin', 'Vendor']">
+      <app-photo-management></app-photo-management>
+    </tab>
+    <tab heading="Product management" *appHasRole="['Admin', 'Vendor']">
       <app-photo-management></app-photo-management>
     </tab>
   </tabset>

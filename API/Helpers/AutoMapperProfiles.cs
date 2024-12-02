@@ -26,6 +26,12 @@ namespace API.Helpers
                     .FirstOrDefault(x => x.IsMain).Url));
             CreateMap<DateTime, DateTime>().ConvertUsing(d=>DateTime.SpecifyKind(d, DateTimeKind.Utc));
             CreateMap<DateTime?,DateTime?>().ConvertUsing(d=> d.HasValue ? DateTime.SpecifyKind(d.Value,DateTimeKind.Utc) : null );
+
+            CreateMap<Product, ProductDTOs>()
+            .ForMember(p=> p.CategoryName,opt => opt.MapFrom(src => src.Category.Name))
+            .ForMember(p=> p.Vendor, opt=> opt.MapFrom(src => src.Vendor.UserName));
+            CreateMap<Category, CategoryDTO>();
+            CreateMap<Order, OrderDTO>();
         }
     }
 }

@@ -31,6 +31,12 @@ namespace API.Extensions
             services.AddScoped<ILikesRepository,LikesRepository>();
             services.AddScoped<IPhotoRepository, PhotoRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+            services.AddScoped<ICartRepository,CartRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICartItemRepository,CartItemRepository>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
             services.AddScoped<IPhotoService, PhotoService>();

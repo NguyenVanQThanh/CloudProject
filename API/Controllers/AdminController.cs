@@ -40,13 +40,13 @@ namespace API.Controllers
             if (!result.Succeeded) return BadRequest("Failed to remove from roles");
             return Ok(await userManager.GetRolesAsync(user));
         }
-        [Authorize(Policy = "ModeratePhotoRole")]
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpGet("photos-to-moderate")]
         public async Task<ActionResult> GetPhotosForModeration(){
             var photos = await unitOfWork.PhotoRepository.GetUnapprovedPhotos();
             return Ok(photos);
         }
-        [Authorize(Policy = "ModeratePhotoRole")]
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPost("approve-photo/{photo-id}")]
         public async Task<ActionResult> ApprovePhoto(int photoId){
             var photo = await unitOfWork.PhotoRepository.GetPhotoById(photoId);
@@ -58,7 +58,7 @@ namespace API.Controllers
             await unitOfWork.Complete();
             return Ok();
         }
-        [Authorize(Policy = "ModeratePhotoRole")]
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPost("reject-photo/{photo-id}")]
         public async Task<ActionResult> RejectPhoto(int photoId){
             var photo = await unitOfWork.PhotoRepository.GetPhotoById(photoId);

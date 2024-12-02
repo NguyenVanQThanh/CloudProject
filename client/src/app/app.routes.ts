@@ -13,9 +13,14 @@ import { MemberEditComponent } from './members/member-edit/member-edit.component
 import { memberDetailedResolver } from './_resolvers/member-detailed.resolver';
 import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 import { adminGuard } from './_guards/admin.guard';
+import { ProductListComponent } from './product/product-list/product-list.component';
+import { ProductDetailComponent } from './product/product-detail/product-detail.component';
+import { productDetailedResolver } from './_resolvers/product-detailed.resolver';
 
 export const routes: Routes = [
   {path: '', component: HomeComponent},
+  {path: 'products', component: ProductListComponent},
+  {path: 'products/:id', component: ProductDetailComponent, resolve: {product: productDetailedResolver}},
   {path: '',
     runGuardsAndResolvers: 'always',
     canActivate: [authGuard],
