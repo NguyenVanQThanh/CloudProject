@@ -40,7 +40,7 @@ namespace API.Extensions
             services.AddSingleton<IAzureBlobService, AzureBlobService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
-            services.Configure<AzureBlobStorageSettings>(config.GetSection("AzureBlobStorage"));
+            services.Configure<AzureBlobStorageSettings>(config.GetSection("AzureBlobSettings"));
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<IOrderServices, OrderServices>();
             services.AddScoped<ICartServices,CartServices>();
