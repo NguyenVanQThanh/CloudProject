@@ -1,8 +1,9 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { MembersService } from '../_services/members.service';
+import { ProductService } from '../_services/product.service';
+import { Product } from '../_models/product';
 
-export const productDetailedResolver: ResolveFn<boolean> = (route, state) => {
-  const memberService = inject(MembersService);
-  return memberService.getMember(route.paramMap.get('username')!);
+export const productDetailedResolver: ResolveFn<Product> = (route, state) => {
+  const productService = inject(ProductService);
+  return productService.getProduct(Number (route.paramMap.get('id')!));
 };

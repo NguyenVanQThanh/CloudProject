@@ -12,7 +12,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    public class AdminController(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, IPhotoService photoService) : BaseApiController
+    public class AdminController(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, IPhotoService photoService,
+                                IOrderServices _orderServices) : BaseApiController
     {
         [Authorize(Policy = "RequireAdminRole")]
         [HttpGet("users-with-roles")]
@@ -73,6 +74,16 @@ namespace API.Controllers
             }
             await unitOfWork.Complete();
             return Ok();
+        }
+        [Authorize(Policy = "RequireAdminRole")]
+        [HttpPut("orders/status/{id}")]
+        public async Task<ActionResult> UpdateOrderStatus(int id,[FromBody]string status){
+            try{
+                if (await _orderServices.UpdateStatus(id, status)) return Ok("OrderStatus has been updated");
+            }catch(Exception ex){
+                return BadRequest(ex.Message);
+            }
+            return BadRequest("Failed to update order status");
         }
     }
 }

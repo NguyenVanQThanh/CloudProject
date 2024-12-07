@@ -9,7 +9,7 @@ namespace API.Helpers
     {
         public string? ProductName {get; set; }
         public string? VendorName {get; set; }
-        public List<string>? CategoryName { get; set; } 
+        public string? CategoryName { get; set; } 
         public bool? Status { get; set; }
         public decimal? MinPrice {get; set;}
         public decimal? MaxPrice {get; set; }

@@ -129,7 +129,7 @@ namespace API.Data
             int count = 1;
             foreach(var product in products){
                 if (product!=null){
-                    product.ImageUrl = $"https://cdnp-clouddb-dev.azureedge.net/image/product{++count}.jpg";
+                    product.ImageUrl = $"https://cdnp-clouddb-dev.azureedge.net/image/product{count++}.jpg";
                     await context.Products.AddAsync(product);
                 }     
             }

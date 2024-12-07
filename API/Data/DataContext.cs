@@ -120,9 +120,9 @@ namespace API.Data
                 .WithMany(u => u.CartVendors)
                 .HasForeignKey(c => c.VendorId)
                 .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<Cart>()
-                .Property(c=>c.TotalPrice)
-                .HasPrecision(18, 2);
+            // modelBuilder.Entity<Cart>()
+            //     .Property(c=>c.TotalPrice)
+            //     .HasPrecision(18, 2);
             //cart items
             modelBuilder.Entity<CartItem>()
                 .HasKey(ci => new { ci.CartId, ci.ProductId });
@@ -135,10 +135,7 @@ namespace API.Data
                 .HasOne(ci => ci.Cart)
                 .WithMany(c => c.CartItems)
                 .HasForeignKey(ci => ci.CartId)
-                .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<CartItem>()
-                .Property(ct=>ct.Price)
-                .HasPrecision(18, 2);
+                .OnDelete(DeleteBehavior.Cascade);
             // product
             // modelBuilder.Entity<Product>()
             //     .HasIndex(p=>p.Name)

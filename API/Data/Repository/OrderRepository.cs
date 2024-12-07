@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
 using API.Entities.Enum;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -28,47 +29,42 @@ namespace API.Data.Repository
             _context.SaveChanges();
         }
 
-        public async Task<ICollection<OrderDTO>> GetAllOrders()
+        public async Task<PagedList<OrderDTO>> GetAllOrders(OrderParams orderParams)
         {
-            var query = _context.Orders.Include(x=>x.UserVendor)
-                        .Include(x=>x.UserClient)
-                        .Include(x=>x.OrderDetails)
-                        .AsQueryable();
-            
-            return await query.ProjectTo<OrderDTO>(_mapper.ConfigurationProvider).ToListAsync();
-        }
-
-        public async Task<ICollection<OrderDTO>> GetOrderByClientName(string clientName, OrderStatus? status)
-        {
-            var query = _context.Orders.Where(o=>o.NameClient == clientName)
+            var product = _context.Orders
                         .Include(x=>x.UserVendor)
                         .Include(x=>x.UserClient)
                         .Include(x=>x.OrderDetails)
                         .AsQueryable();
-            if (status.HasValue){
-                query = query.Where(o=>o.Status == status.Value);
+            if (!string.IsNullOrEmpty(orderParams.ClientName)){
+                product = product.Where(o=>o.UserClient.UserName == orderParams.ClientName);
             }
-            return await query.ProjectTo<OrderDTO>(_mapper.ConfigurationProvider).ToListAsync();
+            if (!string.IsNullOrEmpty(orderParams.VendorName)){
+                product = product.Where(o=>o.UserVendor.UserName == orderParams.VendorName);
+            }
+            if (!string.IsNullOrEmpty(orderParams.Status)){
+                switch (orderParams.Status){
+                    case "Pending":
+                        product = product.Where(o=>o.Status == OrderStatus.Pending);
+                        break;
+                    case "Canceled":
+                        product = product.Where(o=>o.Status == OrderStatus.Canceled);
+                        break;
+                    case "Completed":
+                        product = product.Where(o=>o.Status == OrderStatus.Completed);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            var query = product.ProjectTo<OrderDTO>(_mapper.ConfigurationProvider);
+            return await PagedList<OrderDTO>.CreateAsync(query, orderParams.PageNumber, orderParams.PageSize);
         }
 
         public async Task<Order> GetOrderById(int orderId)
         {
             return await _context.Orders.FindAsync(orderId);
         }
-
-        public async Task<ICollection<OrderDTO>> GetOrderByVendorName(string vendorName, OrderStatus? status)
-        {
-            var query = _context.Orders.Where(o=>o.NameVendor == vendorName)
-                        .Include(x=>x.UserVendor)
-                        .Include(x=>x.UserClient)
-                        .Include(x=>x.OrderDetails)
-                        .AsQueryable();
-            if(status.HasValue){
-                query = query.Where(o=>o.Status == status.Value);
-            }
-            return await query.ProjectTo<OrderDTO>(_mapper.ConfigurationProvider).ToListAsync();
-        }
-
         public async Task<Order> GetOrderDetail(string clientName, string vendorName)
         {
             return await _context.Orders.Where(o=>o.NameClient == clientName && o.NameVendor == vendorName)

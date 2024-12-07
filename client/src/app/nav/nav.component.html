@@ -15,8 +15,11 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/products" routerLinkActive="active">Products</a>
         </li>
+        <li *appHasRole="['Vendor']" class="nav-item">
+          <a class="nav-link" routerLink="/owner" routerLinkActive="active">Owners</a>
+        </li>
         <!-- @if (accountService.roles().includes('Admin') || accountService.roles().includes('Moderator')){ -->
-          <li *appHasRole="['Admin','Moderate']" class="nav-item">
+          <li *appHasRole="['Admin']" class="nav-item">
             <a class="nav-link" routerLink="/admin" routerLinkActive="active">Admin</a>
           </li>
         <!-- } -->
@@ -34,6 +37,7 @@
         <a class="dropdown-toggle text-light text-decoration-none ms-1" dropdownToggle>Welcome {{accountService.currentUser()?.knownAs}}</a>
         <div class="dropdown-menu mt-3" *dropdownMenu>
           <a href="" class="dropdown-item" routerLink="/member/edit">Edit Profile</a>
+          <a href="" class="dropdown-item" routerLink="/cart">Cart</a>
           <a href="" class="dropdown-item" (click)="logout()">Logout</a>
         </div>
       </div>

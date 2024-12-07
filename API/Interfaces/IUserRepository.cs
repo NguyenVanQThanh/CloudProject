@@ -12,6 +12,7 @@ namespace API.Interfaces
     {
         void Update(AppUser user);
         Task<IEnumerable<AppUser>> GetAllAsync();
+        Task<IEnumerable<MemberDTOs>> GetAllByRolesAsync(List<string> roles);
         Task<AppUser> GetByIdAsync(int id);
         Task<AppUser> GetUserByUserName(string userName);
         Task<PagedList<MemberDTOs>> GetMembersAsync(UserParams userParams);

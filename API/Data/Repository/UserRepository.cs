@@ -9,6 +9,7 @@ using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data.Repository
@@ -16,16 +17,30 @@ namespace API.Data.Repository
     public class UserRepository : IUserRepository
     {
         private readonly DataContext _context;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
-        public UserRepository(DataContext context, IMapper mapper)
+        public UserRepository(DataContext context, IMapper mapper, UserManager<AppUser> userManager)
         {
             _context = context;
             _mapper = mapper;
+            _userManager = userManager;
         }
         public async Task<IEnumerable<AppUser>> GetAllAsync()
         {
             return await _context.Users.Include(p=>p.Photos)
             .ToListAsync();
+        }
+
+        public async Task<IEnumerable<MemberDTOs>> GetAllByRolesAsync(List<string> roles)
+        {
+            var userRoles = _context.UserRoles
+                            .Where(ur=>roles.Contains(ur.Role.Name))
+                            .Select(ur=>ur.User)
+                            .Distinct()
+                            .Include(u => u.Photos)
+                            .AsQueryable();
+            return await userRoles.ProjectTo<MemberDTOs>(_mapper.ConfigurationProvider).ToListAsync();
+            
         }
 
         public async Task<AppUser> GetByIdAsync(int id)

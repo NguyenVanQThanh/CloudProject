@@ -15,6 +15,8 @@ namespace API.DTOs
         [Required]
         public string Gender {get; set;}
         [Required]
+        public string Email {get; set;} = default!;
+        [Required]
         public DateOnly? DateOfBirth {get; set;}
         [Required]
         public string City {get; set;}

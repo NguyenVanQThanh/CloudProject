@@ -10,7 +10,7 @@ namespace API.Interfaces
     {
         Task<CartItem> GetCartItemsAsync(int cartId, int productId);
         void AddCartItem(CartItem item);
-        Task<bool> DeleteCartItem(int productId, int cartId);
+        void DeleteCartItem(int productId, int cartId);
         Task<bool> UpdateCartItem(CartItem item);
     }
 }

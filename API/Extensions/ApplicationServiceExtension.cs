@@ -10,7 +10,7 @@ using API.Interfaces;
 using API.Services;
 using API.SignalR;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Azure;
 namespace API.Extensions
 {
     public static class ApplicationServiceExtension
@@ -37,9 +37,13 @@ namespace API.Extensions
             services.AddScoped<ICartRepository,CartRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICartItemRepository,CartItemRepository>();
+            services.AddSingleton<IAzureBlobService, AzureBlobService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
+            services.Configure<AzureBlobStorageSettings>(config.GetSection("AzureBlobStorage"));
             services.AddScoped<IPhotoService, PhotoService>();
+            services.AddScoped<IOrderServices, OrderServices>();
+            services.AddScoped<ICartServices,CartServices>();
             services.AddScoped<LogUserActivity>();
             services.AddSignalR();
             services.AddSingleton<PresenceTracker>();

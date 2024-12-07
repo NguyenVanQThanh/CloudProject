@@ -2,9 +2,9 @@ namespace API.Entities.Enum
 {
     public enum OrderStatus
     {
-        Pending,
-        InProgress,
-        Completed,
-        Cancelled
+        Pending, //0
+        InProgress, //1
+        Completed, //2
+        Canceled //3
     }
 }

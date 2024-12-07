@@ -77,6 +77,9 @@ export class MembersService {
       })
     );
   }
+  getVendors(){
+    return this.http.get<Member[]>(`${this.baseUrl}users/vendors`)
+  }
   setMainPhoto(photoId: Number) {
     return this.http.put(this.baseUrl + 'users/set-main-photo/' + photoId, {});
   }

@@ -31,8 +31,9 @@ namespace API.Data.Repository
 
         public async Task<bool> DisabledProduct(int productId)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(p=>p.Id == productId);
-            if (product == null || product.Status == false){
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
+            if (product == null || product.Status == false)
+            {
                 return false;
             }
             product.Status = true;
@@ -43,36 +44,49 @@ namespace API.Data.Repository
         public async Task<PagedList<ProductDTOs>> GetAllProducts(ProductParams productParams)
         {
             var products = _context.Products
-                        .OrderByDescending(x=>x.Status)
-                        .Include(p=>p.Category)
-                        .Include(p=>p.Vendor)
+                        .OrderByDescending(x => x.Status)
+                        .Include(p => p.Category)
+                        .Include(p => p.Vendor)
                         .AsQueryable();
-            if (!string.IsNullOrEmpty(productParams.ProductName)){
-                products = products.Where(p=>p.Name.Contains(productParams.ProductName));
+            if (!string.IsNullOrEmpty(productParams.ProductName))
+            {
+                products = products.Where(p => p.Name.Contains(productParams.ProductName, StringComparison.OrdinalIgnoreCase));            }
+
+            if (!string.IsNullOrEmpty(productParams.CategoryName))
+            {
+                var categories = productParams.CategoryName.Split(',');
+                products = products.Where(p => categories.Contains(p.Category.Name));
             }
-            if (!productParams.CategoryName.IsNullOrEmpty()){
-                products = products.Where(p=>productParams.CategoryName.Contains(p.Category.Name));
+
+            if (!string.IsNullOrEmpty(productParams.VendorName))
+            {
+                var vendors = productParams.VendorName.Split(','); 
+                products = products.Where(p => vendors.Contains(p.Vendor.UserName));  
             }
-            if (string.IsNullOrEmpty(productParams.VendorName)){
-                products = products.Where(p=>p.Vendor.UserName == productParams.VendorName);
+
+            if (productParams.Status.HasValue)
+            {
+                products = products.Where(p => p.Status == productParams.Status.Value);
             }
-            if (productParams.Status.HasValue){
-                products = products.Where(p=>p.Status == productParams.Status.Value);
+            if (productParams.MinPrice.HasValue)
+            {
+                products = products.Where(p => p.Price >= productParams.MinPrice.Value);
             }
-            if (productParams.MinPrice.HasValue){
-                products = products.Where(p=>p.Price >= productParams.MinPrice.Value);
+            if (productParams.MaxPrice.HasValue)
+            {
+                products = products.Where(p => p.Price <= productParams.MaxPrice.Value);
             }
-            if (productParams.MaxPrice.HasValue){
-                products = products.Where(p=>p.Price <= productParams.MaxPrice.Value);
-            }
-            var query = products.ProjectTo<ProductDTOs>(_mapper.ConfigurationProvider); 
+            var query = products.AsNoTracking().ProjectTo<ProductDTOs>(_mapper.ConfigurationProvider);
             return await PagedList<ProductDTOs>.CreateAsync(query, productParams.PageNumber, productParams.PageSize);
 
         }
 
         public async Task<Product> GetProductById(int productId)
         {
-            return await _context.Products.Where(p => p.Id == productId).FirstOrDefaultAsync();
+            return await _context.Products.Where(p => p.Id == productId)
+                .Include(p=>p.Vendor)
+                .Include(p=>p.Category)
+                .FirstOrDefaultAsync();
         }
     }
 }

@@ -16,11 +16,11 @@ namespace API.Entities
         public decimal Amount { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? FinishedAt { get; set; }
-        public OrderStatus Status { get; set;}
+        public OrderStatus Status { get; set; }
         public OrderPayment Payment { get; set; }
         public AppUser UserClient { get; set; } = null!;
         public AppUser UserVendor { get; set; } = null!;
-        public ICollection<OrderDetail>? OrderDetails { get; set; } 
+        public List<OrderDetail>? OrderDetails { get; set; } 
         
     }
 }

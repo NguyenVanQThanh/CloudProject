@@ -11,7 +11,8 @@ namespace API.DTOs
         public int Quantity { get; set; }
         public decimal Price { get; set; }
         // public int ClientId { get; set; }
-        public string ClientName { get; set; } = default!;
+        public string? ClientName { get; set; }
         public string VendorName { get; set; } = default!;
+        List<CartItemDTO> CartItems { get; set; } = new();
     }
 }

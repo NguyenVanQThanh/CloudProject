@@ -7,6 +7,6 @@ namespace API.Interfaces
 {
     public interface IOrderServices
     {
-        
+        Task<bool> UpdateStatus(int id, string status);
     }
 }

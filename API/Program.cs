@@ -6,14 +6,18 @@ using API.Middleware;
 using API.SignalR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+var storageConnection = builder.Configuration["AzureBlobStorage:StorageCloud"];
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
+builder.Services.AddAzureClients(azureBuilder => {
+                azureBuilder.AddBlobServiceClient(storageConnection);
+            });
 // builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

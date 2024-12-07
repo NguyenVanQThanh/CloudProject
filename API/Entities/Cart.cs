@@ -10,7 +10,7 @@ namespace API.Entities
         public int ClientId { get; set; }
         public int VendorId { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.Now;
-        public decimal TotalPrice { get; set; }
+        // public decimal TotalPrice { get; set; }
         public AppUser Client { get; set;} = default!;
         public AppUser Vendor { get; set;} = default!;
         public List<CartItem> CartItems { get; set; } = new();

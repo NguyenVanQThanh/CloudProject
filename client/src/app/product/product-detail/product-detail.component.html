@@ -1,1 +1,41 @@
-<p>product-detail works!</p>
+<div class="row">
+  <div class="col-4">
+    <div class="card">
+      <img
+        src="{{ product.imageUrl || 'assets/product_raw.png' }}"
+        alt="{{ product.name }}"
+        class="card-img-top img-thumbnail"
+      />
+      <div class="card-body">
+        <div>
+          <strong>Category: </strong>
+          <p>{{product.categoryName}}</p>
+        </div>
+        <div>
+          <strong>Vendor: </strong>
+          <p>{{product.vendor}}</p>
+        </div>
+        <div>
+          <strong>Price: </strong>
+          <p>{{product.price}} $</p>
+        </div>
+        @if (!product.status || product.quantity <= 0){
+          <p class="text-danger">Out of stock</p>
+        }
+      </div>
+      <div class="card-footer">
+        <div class="btn-group d-flex">
+          @if(productOwner(product)){
+            <button class="btn btn-primary" (click)="edit()">Edit</button>
+          }
+          @else {
+            <button [disabled]="!product.status || product.quantity <= 0" class="btn btn-success" (click)="addToCart(product)">Add Cart</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-8">
+    <p>{{product.description}}</p>
+  </div>
+</div>

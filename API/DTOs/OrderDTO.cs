@@ -16,7 +16,8 @@ namespace API.DTOs
         public decimal Amount { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? FinishedAt { get; set; }
-        public OrderStatus Status { get; set;}
-        public OrderPayment Payment { get; set; }
+        public string Status { get; set;} = default!;
+        public string Payment { get; set; } = default!;
+        public List<OrderDetailDTO> OrderDetails { get; set; } = new();
     }
 }

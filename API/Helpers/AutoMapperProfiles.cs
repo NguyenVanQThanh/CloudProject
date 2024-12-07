@@ -15,7 +15,8 @@ namespace API.Helpers
             CreateMap<AppUser, MemberDTOs>()
             .ForMember(dest => dest.PhotoUrl,
             opt => opt.MapFrom(src => src.Photos.FirstOrDefault(x=>x.IsMain).Url))
-            .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
+            .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email));
             CreateMap<Photo, PhotoDto>();
             CreateMap<MemberUpdateDto, AppUser>();
             CreateMap<RegisterDTO, AppUser>();
@@ -31,7 +32,18 @@ namespace API.Helpers
             .ForMember(p=> p.CategoryName,opt => opt.MapFrom(src => src.Category.Name))
             .ForMember(p=> p.Vendor, opt=> opt.MapFrom(src => src.Vendor.UserName));
             CreateMap<Category, CategoryDTO>();
-            CreateMap<Order, OrderDTO>();
+            CreateMap<Order, OrderDTO>()
+            .ForMember(o=>o.Status, opt => opt.MapFrom(src => nameof(src.Status)))
+            .ForMember(o=>o.Payment, opt => opt.MapFrom(src => nameof(src.Payment)));
+            CreateMap<Cart, CartDTOs>()
+            .ForMember(c=>c.VendorName, opt=> opt.MapFrom(src => src.Vendor.UserName))
+            .ForMember(c=>c.ClientName, opt=> opt.MapFrom(src => src.Client.UserName))
+            .ForMember(c=>c.TotalPrice, opt=> opt.MapFrom(src => src.CartItems.Sum(ci=>ci.Quantity*ci.Product.Price)));
+            CreateMap<CartItem, CartItemDTO>()
+            .ForMember(c=>c.ProductName,opt=> opt.MapFrom(src => src.Product.Name))
+            .ForMember(c=>c.Price, opt => opt.MapFrom(src => src.Product.Price))
+            .ForMember(c=>c.QuantityInStock,opt=> opt.MapFrom(src => src.Product.Quantity));
+            ;
         }
     }
 }

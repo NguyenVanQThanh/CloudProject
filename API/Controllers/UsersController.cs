@@ -47,7 +47,8 @@ namespace API.Controllers
         public async Task<ActionResult<MemberDTOs>> GetUserByUserName(string username)
         {
             var currentUsername = User.GetUserName();
-            return await unitOfWork.UserRepository.GetMemberAsync(username, isCurrentUser : currentUsername == username);
+            var memberDTO =  await unitOfWork.UserRepository.GetMemberAsync(username, isCurrentUser : currentUsername == username);
+            return Ok(memberDTO);
         }
         [HttpPut]
         public async Task<ActionResult<MemberDTOs>> UpdateUser(MemberUpdateDto memberUpdateDTO)
@@ -110,6 +111,14 @@ namespace API.Controllers
                 if (await unitOfWork.Complete()) return Ok();
                 return BadRequest("Failed to delete photo");
             }
+        }
+        [AllowAnonymous]
+        [HttpGet("vendors")]
+        public async Task<ActionResult<IEnumerable<MemberDTOs>>> GetVendors()
+        {
+            List<string> vendors = new List<string>{"vendor"};
+            var lists = await unitOfWork.UserRepository.GetAllByRolesAsync(vendors);
+            return Ok(lists);
         }
     }
 }
