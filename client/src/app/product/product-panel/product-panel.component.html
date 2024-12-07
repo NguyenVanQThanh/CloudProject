@@ -22,7 +22,7 @@
           @for(category of categories; track category){
           <div
             class="p-1 border-bottom"
-            [class.bg-secondary]="!existCategoryParams(category)"
+            [class.bg-info]="existCategoryParams(category) !== -1"
             (click)="toggleCategory(category)"
             style="cursor: pointer"
           >
@@ -40,7 +40,7 @@
           @for(vendor of vendors; track vendor){
           <div
             class="p-1 border-bottom"
-            [class.bg-secondary]="existVendorParams(vendor)"
+            [class.bg-info]="existVendorParams(vendor) !== -1"
             (click)="toggleVendor(vendor)"
             style="cursor: pointer"
           >
